@@ -33,8 +33,8 @@ namespace DatabaseFirstLINQ
             //ProblemSixteen(); Completed
             //ProblemSeventeen(); Completed
             //ProblemEighteen(); Completed
-            //ProblemNineteen();
-            //ProblemTwenty();
+            //ProblemNineteen(); Completed
+            ProblemTwenty();
         }
 
         // <><><><><><><><> R Actions (Read) <><><><><><><><><>
@@ -125,7 +125,7 @@ namespace DatabaseFirstLINQ
         {
             // Write a LINQ query that retreives all of the products in the shopping cart of the user who has the email "afton@gmail.com".
             // Then print the product's name, price, and quantity to the console.
-            var cartContents = _context.ShoppingCart.Include(up => up.Users).Include(up => up.Product).Where(up => up.Users.Email == "afton@gmail.com");
+            var cartContents = _context.User.Include(up => up.Users).Include(up => up.Product).Where(up => up.Users.Email == "afton@gmail.com");
             foreach(ShoppingCart products in cartContents) 
             {
                 Console.WriteLine($" Product's Name:{products.Product.Name} Price: {products.Product.Price} Quantity:{products.Quantity}");
@@ -137,7 +137,7 @@ namespace DatabaseFirstLINQ
             // Write a LINQ query that retreives all of the products in the shopping cart of the user who has the email "oda@gmail.com" and returns the sum of all of the products prices.
             // HINT: End of query will be: .Select(sc => sc.Product.Price).Sum();
             // Then print the total of the shopping cart to the console.
-            var cartContents = _context.ShoppingCart.Include(up => up.Users).Include(up => up.Product).Where(up => up.Users.Email == "oda@gmail.com").Select(sc => sc.Product.Price).Sum(); ;
+            var cartContents = _context.User.Include(up => up.Users).Include(up => up.Product).Where(up => up.Users.Email == "oda@gmail.com").Select(sc => sc.Product.Price).Sum(); ;
                 Console.WriteLine(cartContents);
             
         }
@@ -147,7 +147,7 @@ namespace DatabaseFirstLINQ
             // Write a LINQ query that retreives all of the products in the shopping cart of users who have the role of "Employee".
             // Then print the user's email as well as the product's name, price, and quantity to the console.
             var customerEmployees = _context.UserRoles.Include(ur => ur.Role).Include(ur => ur.User).Where(ur => ur.Role.RoleName == "Employee").Select(ur => ur.UserId);
-            var cartContents = _context.ShoppingCart.Include(up => up.Users).Include(up => up.Product).Where(up => customerEmployees.Contains(up.UserId) );
+            var cartContents = _context.User.Include(up => up.Users).Include(up => up.Product).Where(up => customerEmployees.Contains(up.UserId) );
             foreach (ShoppingCart products in cartContents)
             {
                 Console.WriteLine($" User's Email: {products.Users.Email}");
@@ -209,7 +209,7 @@ namespace DatabaseFirstLINQ
                 ProductId = productId,
                 Quantity = 1
             };
-            _context.ShoppingCart.Add(newUserProduct);
+            _context.User.Add(newUserProduct);
             _context.SaveChanges();
         }
 
@@ -263,10 +263,10 @@ namespace DatabaseFirstLINQ
         {
             // Delete all of the product relationships to the user with the email "oda@gmail.com" in the ShoppingCart table using LINQ.
             // HINT: Loop
-            var shoppingCartProducts = _context.ShoppingCart.Where(sc => sc.Users.Email == "oda@gmail.com");
+            var shoppingCartProducts = _context.User.Where(sc => sc.Users.Email == "oda@gmail.com");
             foreach (ShoppingCart userProductRelationship in shoppingCartProducts)
             {
-                _context.ShoppingCart.Remove(userProductRelationship);
+                _context.User.Remove(userProductRelationship);
             }
             _context.SaveChanges();
         }
@@ -274,7 +274,12 @@ namespace DatabaseFirstLINQ
         private void ProblemTwenty()
         {
             // Delete the user with the email "oda@gmail.com" from the Users table using LINQ.
-
+            var user = _context.Users.Where(u => u.Email == "oda@gmail.com");
+            foreach (User userId in user)
+            {
+                _context.Users.Remove(userId);
+            }
+            _context.SaveChanges();
         }
 
         // <><><><><><><><> BONUS PROBLEMS <><><><><><><><><>
