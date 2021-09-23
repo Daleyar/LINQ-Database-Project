@@ -72,7 +72,7 @@ namespace DatabaseFirstLINQ.Models
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK__ShoppingC__Produ__300424B4");
 
-                entity.HasOne(d => d.User)
+                entity.HasOne(d => d.Users)
                     .WithMany(p => p.ShoppingCarts)
                     .HasForeignKey(d => d.UserId)
                     .OnDelete(DeleteBehavior.ClientSetNull)

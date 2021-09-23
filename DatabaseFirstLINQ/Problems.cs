@@ -21,8 +21,8 @@ namespace DatabaseFirstLINQ
             //ProblemFour(); Completed
             //ProblemFive(); Completed
             //ProblemSix(); Completed
-            //ProblemSeven();
-            //ProblemEight();
+            //ProblemSeven(); Completed
+            //ProblemEight(); Completed
             //ProblemNine();
             //ProblemTen();
             //ProblemEleven();
@@ -125,7 +125,11 @@ namespace DatabaseFirstLINQ
         {
             // Write a LINQ query that retreives all of the products in the shopping cart of the user who has the email "afton@gmail.com".
             // Then print the product's name, price, and quantity to the console.
-
+            var cartContents = _context.ShoppingCarts.Include(up => up.Users).Include(up => up.Product).Where(up => up.Users.Email == "afton@gmail.com");
+            foreach(ShoppingCart products in cartContents) 
+            {
+                Console.WriteLine($" Product's Name:{products.Product.Name} Price: {products.Product.Price} Quantity:{products.Quantity}");
+            }
         }
 
         private void ProblemNine()
@@ -230,7 +234,7 @@ namespace DatabaseFirstLINQ
         {
             // Delete all of the product relationships to the user with the email "oda@gmail.com" in the ShoppingCart table using LINQ.
             // HINT: Loop
-            var shoppingCartProducts = _context.ShoppingCarts.Where(sc => sc.User.Email == "oda@gmail.com");
+            var shoppingCartProducts = _context.ShoppingCarts.Where(sc => sc.Users.Email == "oda@gmail.com");
             foreach (ShoppingCart userProductRelationship in shoppingCartProducts)
             {
                 _context.ShoppingCarts.Remove(userProductRelationship);
