@@ -34,7 +34,9 @@ namespace DatabaseFirstLINQ
             //ProblemSeventeen(); Completed
             //ProblemEighteen(); Completed
             //ProblemNineteen(); Completed
-            ProblemTwenty();
+            //ProblemTwenty(); Completed
+            BonusOne();
+            //BonusTwo();
         }
 
         // <><><><><><><><> R Actions (Read) <><><><><><><><><>
@@ -126,7 +128,7 @@ namespace DatabaseFirstLINQ
             // Write a LINQ query that retreives all of the products in the shopping cart of the user who has the email "afton@gmail.com".
             // Then print the product's name, price, and quantity to the console.
             var cartContents = _context.User.Include(up => up.Users).Include(up => up.Product).Where(up => up.Users.Email == "afton@gmail.com");
-            foreach(ShoppingCart products in cartContents) 
+            foreach (ShoppingCart products in cartContents)
             {
                 Console.WriteLine($" Product's Name:{products.Product.Name} Price: {products.Product.Price} Quantity:{products.Quantity}");
             }
@@ -138,8 +140,8 @@ namespace DatabaseFirstLINQ
             // HINT: End of query will be: .Select(sc => sc.Product.Price).Sum();
             // Then print the total of the shopping cart to the console.
             var cartContents = _context.User.Include(up => up.Users).Include(up => up.Product).Where(up => up.Users.Email == "oda@gmail.com").Select(sc => sc.Product.Price).Sum(); ;
-                Console.WriteLine(cartContents);
-            
+            Console.WriteLine(cartContents);
+
         }
 
         private void ProblemTen()
@@ -147,7 +149,7 @@ namespace DatabaseFirstLINQ
             // Write a LINQ query that retreives all of the products in the shopping cart of users who have the role of "Employee".
             // Then print the user's email as well as the product's name, price, and quantity to the console.
             var customerEmployees = _context.UserRoles.Include(ur => ur.Role).Include(ur => ur.User).Where(ur => ur.Role.RoleName == "Employee").Select(ur => ur.UserId);
-            var cartContents = _context.User.Include(up => up.Users).Include(up => up.Product).Where(up => customerEmployees.Contains(up.UserId) );
+            var cartContents = _context.User.Include(up => up.Users).Include(up => up.Product).Where(up => customerEmployees.Contains(up.UserId));
             foreach (ShoppingCart products in cartContents)
             {
                 Console.WriteLine($" User's Email: {products.Users.Email}");
@@ -289,29 +291,30 @@ namespace DatabaseFirstLINQ
             // Prompt the user to enter in an email and password through the console.
             // Take the email and password and check if the there is a person that matches that combination.
             // Print "Signed In!" to the console if they exists and the values match otherwise print "Invalid Email or Password.".
-        }
 
-        private void BonusTwo()
-        {
-            // Write a query that finds the total of every users shopping cart products using LINQ.
-            // Display the total of each users shopping cart as well as the total of the toals to the console.
-        }
+            Console.WriteLine($"Enter your email");
+            string userEmail = Console.ReadLine();
+            Console.WriteLine($"Enter your password");
+            string userPassword = Console.ReadLine();
 
-        // BIG ONE
-        private void BonusThree()
-        {
-            // 1. Create functionality for a user to sign in via the console
-            // 2. If the user succesfully signs in
-            // a. Give them a menu where they perform the following actions within the console
-            // View the products in their shopping cart
-            // View all products in the Products table
-            // Add a product to the shopping cart (incrementing quantity if that product is already in their shopping cart)
-            // Remove a product from their shopping cart
-            // 3. If the user does not succesfully sing in
-            // a. Display "Invalid Email or Password"
-            // b. Re-prompt the user for credentials
+            var userExists = _context.Users.Where(us => us.Email == userEmail).Where(pw => pw.Password == userPassword).Any();
+            if (userExists)
+            {
+                Console.WriteLine($"Signed In");
+
+            }
+            else
+            {
+                Console.WriteLine($"Invalid Email or Password");
+
+            }
 
         }
-
     }
 }
+
+           
+                
+
+
+
